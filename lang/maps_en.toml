@@ -1,4 +1,33 @@
 module_maps = "Maps"
 
-mt_maps_overview = "mapss"
-md_maps_overview = "Overview of maps"
+#######
+# GDT #
+#######
+position = "Position"
+tt_position = "Geocoordinates."
+latitude = "Latitude"
+tt_latitude = "THe latitude is the short quarter  sphere position from south to north."
+longitude = "Longitude"
+tt_longitude = "THe longitude is the long half sphere position from east to west."
+
+#############
+# TrackMode #
+#############
+precise = "Precise"
+tt_precise = "Show your location as exact as possible."
+blurred = "Blurred"
+tt_blurred = "Show your location rounded to some digits."
+manual = "Manually"
+tt_manually = "You can set your position manually."
+
+#########
+# Track #
+#########
+mt_maps_track = "Position Tracker"
+md_maps_track = "Store your current geoposition. Accuracy can be chosen by the users freely, the default is probably vague.."
+
+############
+# Overview #
+############
+mt_maps_overview = "Global Map"
+md_maps_overview = "Show an interactive global map with PointsOfInterest and UserPositions."

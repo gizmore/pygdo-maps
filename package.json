@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "js_dependency": "^1.33.7"
+    "leaflet": "^1.9.4",
+    "leaflet.markercluster": "^1.5.3"
   }
 }
