@@ -66,6 +66,7 @@ class module_maps(GDO_Module):
         self.add_bower_js('leaflet/dist/leaflet-src.js')
         self.add_bower_css('leaflet/dist/leaflet.css')
         self.add_js('js/pygdo-maps-tracker.js')
+        self.add_js('js/pygdo-leaflet.js')
         self.add_js('js/pygdo-maps.js')
         self.add_css('css/pygdo-maps.css')
 

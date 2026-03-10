@@ -8,4 +8,8 @@ class overview(MethodPage):
 
     def form_submitted(self):
         return self.msg('%s', 'Yeah!')
-    
+
+    def gdo_before_execute(self):
+        m = self.gdo_module()
+        m.a
+
