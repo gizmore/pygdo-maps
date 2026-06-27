@@ -8,6 +8,9 @@ window.gdo.onlineMap = {
     playerMarker: null,
 
     gdo_init: function() {
+        if(!document.getElementById('map')) {
+            return;
+        }
         this.map = L.map('map', {
             center: [52.52, 13.405], // Berlin default
             zoom: 14,
