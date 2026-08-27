@@ -10,6 +10,7 @@ class GDT_TrackMode(GDT_Enum):
     def __init__(self, name: str):
         super().__init__(name)
         self.not_null()
+        self.icon('select')
 
     def gdo_choices(self) -> dict:
         return {
