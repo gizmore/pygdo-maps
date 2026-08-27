@@ -1,4 +1,5 @@
 from gdo.core.GDT_Enum import GDT_Enum
+from gdo.base.Trans import t
 
 
 class GDT_TrackMode(GDT_Enum):
@@ -14,7 +15,7 @@ class GDT_TrackMode(GDT_Enum):
 
     def gdo_choices(self) -> dict:
         return {
-            self.PRECISE: self.PRECISE,
-            self.BLURRED: self.BLURRED,
-            self.MANUAL: self.MANUAL,
+            self.PRECISE: t(self.PRECISE),
+            self.BLURRED: t(self.BLURRED),
+            self.MANUAL: t(self.MANUAL),
         }

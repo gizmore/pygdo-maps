@@ -9,8 +9,11 @@
  */
 function mapsTracker() {
   const HEADER = "X-Geo-Pos";
+  const FALLBACK_INTERVAL = 60_000;
   let last = null; // {lat, lon, acc, ts}
   let watchId = null;
+  let fallbackTimer = null;
+  let started = false;
 
   function encode(pos) {
     if (!pos) return "na";
@@ -52,22 +55,46 @@ function mapsTracker() {
     }
   }
 
+  function resetFallbackTimer() {
+    if (!started) return;
+    if (fallbackTimer != null) window.clearTimeout(fallbackTimer);
+    fallbackTimer = window.setTimeout(sendCurrentPosition, FALLBACK_INTERVAL);
+  }
+
+  async function sendCurrentPosition() {
+    const value = await getPosHeaderValue();
+    if (value !== "na") {
+      try {
+        await window.fetch("/maps.ping.json", { headers: { [HEADER]: value } });
+      } catch (_) {}
+    }
+    resetFallbackTimer();
+  }
+
+  function hasGeoHeader(headers) {
+    if (headers instanceof Headers) return headers.has(HEADER);
+    if (Array.isArray(headers)) {
+      return headers.some(([key]) => String(key).toLowerCase() === HEADER.toLowerCase());
+    }
+    return !!headers && typeof headers === "object" &&
+      Object.keys(headers).some((key) => key.toLowerCase() === HEADER.toLowerCase());
+  }
+
   function addHeaderToHeaders(headers, value) {
     try {
       if (headers instanceof Headers) {
-        if (!headers.has(HEADER)) headers.set(HEADER, value);
+        if (!hasGeoHeader(headers)) headers.set(HEADER, value);
         return headers;
       }
       if (Array.isArray(headers)) {
         // [ [k,v], ... ]
-        if (!headers.some(([k]) => String(k).toLowerCase() === HEADER.toLowerCase())) {
+        if (!hasGeoHeader(headers)) {
           headers.push([HEADER, value]);
         }
         return headers;
       }
       if (headers && typeof headers === "object") {
-        const has = Object.keys(headers).some((k) => k.toLowerCase() === HEADER.toLowerCase());
-        if (!has) headers[HEADER] = value;
+        if (!hasGeoHeader(headers)) headers[HEADER] = value;
         return headers;
       }
     } catch (_) {}
@@ -84,7 +111,9 @@ function mapsTracker() {
     window.fetch = async function (input, init) {
       init = init || {};
       const value = await getPosHeaderValue();
+      const injected = !hasGeoHeader(init.headers);
       init.headers = addHeaderToHeaders(init.headers, value);
+      if (injected) resetFallbackTimer();
       return origFetch(input, init);
     };
   }
@@ -116,6 +145,7 @@ function mapsTracker() {
         .then((value) => {
           try {
             origSet.call(this, HEADER, value);
+            resetFallbackTimer();
           } catch (_) {}
           origSend.call(this, body);
         })
@@ -132,8 +162,11 @@ function mapsTracker() {
   }
 
   function startWatching() {
-    if (!("geolocation" in navigator)) return;
-    if (watchId != null) return;
+    if (!started) {
+      started = true;
+      sendCurrentPosition();
+    }
+    if (!("geolocation" in navigator) || watchId != null) return;
 
     watchId = navigator.geolocation.watchPosition(
       (geoPos) => setLastFromGeolocation(geoPos),
@@ -143,10 +176,13 @@ function mapsTracker() {
   }
 
   function stopWatching() {
-    if (!("geolocation" in navigator)) return;
-    if (watchId == null) return;
-    navigator.geolocation.clearWatch(watchId);
-    watchId = null;
+    started = false;
+    if (fallbackTimer != null) window.clearTimeout(fallbackTimer);
+    fallbackTimer = null;
+    if ("geolocation" in navigator) {
+      if (watchId != null) navigator.geolocation.clearWatch(watchId);
+      watchId = null;
+    }
   }
 
   // install immediately

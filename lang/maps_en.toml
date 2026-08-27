@@ -11,15 +11,16 @@ longitude = "Longitude"
 tt_longitude = "THe longitude is the long half sphere position from east to west."
 tracking_mode = "Tracking Mode"
 tracking_digits = "Tracking accuracy digits"
+tt_map_tracking = "Configure GPS recording"
 
 #############
 # TrackMode #
 #############
-precise = "Precise"
+precise = "Save exact"
 tt_precise = "Show your location as exact as possible."
-blurred = "Blurred"
+blurred = "Round to accuracy digits"
 tt_blurred = "Show your location rounded to some digits."
-manual = "Manually"
+manual = "Only manual Geoposition"
 tt_manually = "You can set your position manually."
 
 #########
