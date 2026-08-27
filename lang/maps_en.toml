@@ -9,6 +9,8 @@ latitude = "Latitude"
 tt_latitude = "THe latitude is the short quarter  sphere position from south to north."
 longitude = "Longitude"
 tt_longitude = "THe longitude is the long half sphere position from east to west."
+tracking_mode = "Tracking Mode"
+tracking_digits = "Tracking accuracy digits"
 
 #############
 # TrackMode #
