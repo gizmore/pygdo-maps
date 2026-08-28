@@ -117,4 +117,4 @@ class module_maps(GDO_Module):
         self.add_css('css/pygdo-maps.css')
 
     def gdo_init_sidebar(self, page: 'GDT_Page'):
-        page._left_bar.add_field(GDT_Link().href(self.href('overview')).text('module_maps'))
+        page._left_bar.add_field(GDT_Link().href(self.href('overview')).text('module_maps').icon('map'))
