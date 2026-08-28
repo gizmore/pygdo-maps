@@ -10,6 +10,10 @@ class track(Method):
     Track a user.
     """
 
+    @classmethod
+    def gdo_trigger(cls) -> str:
+        return ''
+
     def gdo_needs_authentication(self) -> bool:
         return True
 

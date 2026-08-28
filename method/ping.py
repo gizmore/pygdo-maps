@@ -5,6 +5,10 @@ from gdo.base.Method import Method
 class ping(Method):
     """Accept the browser's tracking heartbeat; Maps handles its geo header."""
 
+    @classmethod
+    def gdo_trigger(cls) -> str:
+        return ''
+
     def gdo_needs_authentication(self) -> bool:
         return False
 
